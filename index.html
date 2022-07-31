@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0px;
+        padding: 0px;
+        box-sizing: border-box;
+        font-family: "Raleway", sans-serif;
+      }
+
+      .mainDiv {
+        height: 100vh;
+        width: 100%;
+        position: relative;
+        background-color: #3498db;
+      }
+
+      .centerDiv {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+      }
+
+      h1 {
+        text-transform: capitalize;
+        text-align: center;
+        margin-bottom: 30px;
+        color: #ecf0f1;
+        text-shadow: 1px 2px 3px #2980b9;
+        font-size: 2.1rem;
+      }
+
+      h2 {
+        text-align: center;
+      }
+
+      textarea {
+        background-color: #444;
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+        border-radius: 10px 10px 0 0;
+        border: 20px solid #34495e;
+        color: white;
+        font-size: 1.3rem;
+      }
+
+      @media only screen and (max-width: 1200px) {
+        .centerDiv {
+          width: 100%;
+        }
+        textarea {
+          width: 100%;
+        }
+      }
+
+      .mainbtn {
+        padding: 10px 20px;
+        border-radius: 20px;
+        border: 5px solid #2980b9;
+        background: #ecf0f1;
+        font-size: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mainDiv">
+      <div class="centerDiv">
+        <h1>Welcome to Typing Speed Test</h1>
+        <h2 id="msg"></h2>
+        <textarea
+          name="typingArea"
+          id="mywords"
+          cols="100"
+          rows="10"
+          placeholder="Remember be nice!!!"
+        ></textarea>
+        <br />
+        <button id="btn" class="mainbtn">Start</button>
+      </div>
+    </div>
+
+    <script>
+      const setOfWords = [
+        "Hii this is me doing absolutely well",
+        "Hii whats your name",
+        "Lorem ipsum dolor sit amet consectetur",
+        "Adipisicing elit explicabo amet harum sit minima",
+        "Suscipit dignissimos neque consequuntur optio nulla numquam unde nemo",
+        "Explicabo sapiente impedit eius saepe delectus quas consequatur",
+      ];
+
+      const msg = document.getElementById("msg");
+      const typeWords = document.getElementById("mywords");
+      const btn = document.getElementById("btn");
+      let startTime, endTime;
+
+      window.addEventListener("load", function () {
+        typeWords.disabled = true;
+      });
+
+      const playGame = () => {
+        let random = Math.floor(Math.random() * setOfWords.length);
+        msg.innerText = setOfWords[random];
+        let date = new Date();
+        startTime = date.getTime();
+        btn.innerText = "Done";
+      };
+
+      const endPlay = () => {
+        let date = new Date();
+        endTime = date.getTime();
+        let totalTime = (endTime - startTime) / 1000;
+
+        let totalStr = typeWords.value;
+        let wordCount = wordCounter(totalStr);
+
+        let speed = Math.round((wordCount / totalTime) * 60);
+
+        let finalMsg = "You typed total at " + speed + " words per minutes";
+
+        finalMsg += comparWords(msg.innerText, totalStr);
+
+        msg.innerText = finalMsg;
+      };
+
+      const comparWords = (str1, str2) => {
+        let word1 = str1.split(" ");
+        let word2 = str2.split(" ");
+
+        let cnt = 0;
+        word1.forEach(function (item, index) {
+          if (item == word2[index]) cnt++;
+        });
+
+        let errorWords = word1.length - cnt;
+        return (
+          ", " +
+          cnt +
+          " correct out of " +
+          word1.length +
+          " words and the total number of error are " +
+          errorWords +
+          "."
+        );
+      };
+
+      const wordCounter = (totalStr) => {
+        let arr = totalStr.split(" ").length;
+        return arr;
+      };
+
+      btn.addEventListener("click", function () {
+        console.log(this);
+        if (this.innerText == "Start") {
+          typeWords.disabled = false;
+          playGame();
+        } else if (this.innerText == "Done") {
+          typeWords.disabled = true;
+          btn.innerText = "Start";
+          endPlay();
+        }
+      });
+    </script>
+  </body>
+</html>
